@@ -112,8 +112,6 @@ const getBookmarks = () => {
   });
 };
 
-getBookmarks();
-
 const storeBookmarkObj = (body) => {
   axios
     .post(`${localBaseURL}/bookmarks`, body)
@@ -168,7 +166,7 @@ const printWikiGrouping = (
       res = res['*'];
       if (counter === 1) {
         pageName.innerHTML = `<h2>${page}<br>History</h2> <h4 id="page-alert">Please bookmark if you'd like to revisit</h4>`;
-        contentShell.innerHTML = `<div id='bookmark-div'><div><a id='wiki-link-a' href='https://en.wikipedia.org/wiki/${page}' target='_blank' rel='noreferrer noopener'>Visit Wiki Page</a></div><i id="bookmark" class="fa fa-bookmark-o"></i></div>${res}`;
+        contentShell.innerHTML = `<div id='bookmark-div'><div><a id='wiki-link-a' href='https://en.wikipedia.org/wiki/${page}#History' target='_blank' rel='noreferrer noopener'>Visit Wiki Page</a></div><i id="bookmark" class="fa fa-bookmark-o"></i></div>${res}`;
         let bookmark = document.getElementById('bookmark');
         pageAlert = document.getElementById('page-alert');
         bookmark.addEventListener('click', () => {
