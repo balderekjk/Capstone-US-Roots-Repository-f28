@@ -34,6 +34,9 @@ aside from those not properly listed through Action API.
 6. Axios - Making CRUD easier
 
 ### View Demo Image and Video
+<iframe src="https://player.vimeo.com/video/757356941?h=ac16bdbf5d" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+<p><a href="https://vimeo.com/757356941">U.S. Roots Repository - Capstone Project - DevMountain - F28 - Derek Bal</a> from <a href="https://vimeo.com/user141884795">Derek Bal</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
+
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=YOUTUBE_VIDEO_ID_HERE
-" target="_blank"><img src="http://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg" 
+" target="_blank"><img src="https://i.vimeocdn.com/filter/overlay?src0=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F1521223353-a8fbfc5f216fc748e8a45663c542cbc1eb5ee21cf131963689de3aaa3a5e8f4f-d_200x150&src1=http%3A%2F%2Ff.vimeocdn.com%2Fp%2Fimages%2Fcrawler_play.png" 
 alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
