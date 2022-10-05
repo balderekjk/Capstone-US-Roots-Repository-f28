@@ -56,6 +56,7 @@ const populateLocalAPI = () => {
   let itemVals = Object.keys(localStorage);
   itemVals.forEach((item) => {
     parsedStorage = JSON.parse(localStorage.getItem(item));
+    console.log(parsedStorage);
     storeBookmarkObj(parsedStorage);
   });
 };
@@ -98,7 +99,7 @@ const getBookmarks = () => {
           `section=${rep['sectionId']}&`
         ).then((res) => {
           bookmarkTitle.innerHTML = `<h2>${rep['page']}<br>History</h2> <h4>Feel free to remove bookmark</h4>`;
-          bookmarksContentShell.innerHTML = `<div id='bookmark-div'><div><a id='wiki-link-a' href='https://en.wikipedia.org/wiki/${rep['page']}' target='_blank' rel='noreferrer noopener'>Visit Wiki Page</a></div><i id="unbookmark" class="fa fa-bookmark-o"></i></div>${res['*']}`;
+          bookmarksContentShell.innerHTML = `<div id='bookmark-div'><div><a id='wiki-link-a' href='https://en.wikipedia.org/wiki/${rep['page']}#History' target='_blank' rel='noreferrer noopener'>Visit Wiki Page</a></div><i id="unbookmark" class="fa fa-bookmark-o"></i></div>${res['*']}`;
           bookmarksContentShell.classList.add('containerize');
           let unbookmark = document.getElementById('unbookmark');
           unbookmark.addEventListener('click', () => {
@@ -175,9 +176,18 @@ const printWikiGrouping = (
           createBookmarkObj(page, bookmarkId);
         });
         if (contentShell.textContent.includes('Redirect to')) {
+          console.log(contentShell.textContent);
           let slice1 = contentShell.textContent.indexOf(':') + 1;
-          let slice2 = contentShell.textContent.indexOf('.mw');
+          let slice2 = 0;
+          if (contentShell.textContent.indexOf('.mw') !== -1) {
+            slice2 = contentShell.textContent.indexOf('.mw');
+          } else {
+            let substr = contentShell.textContent.substring(slice1);
+            let addValue = substr.indexOf('F') - 1;
+            slice2 = slice1 + addValue;
+          }
           let sliced = contentShell.textContent.slice(slice1, slice2);
+          console.log(sliced);
           printWikiGrouping(sliced, 'sections', '', 'History', '');
         }
       } else {

@@ -27,7 +27,7 @@ body {
   align-items: center;
   border: 1px solid hsl(17, 69%, 17%);
   width: 25%;
-  min-width: 92px;
+  min-width: 96px;
 }
 
 .flex-center-cols > #bookmark-view-shell {
@@ -37,7 +37,7 @@ body {
   border: 1px solid hsl(17, 69%, 17%);
   width: 75%;
   min-height: 100vh;
-  min-width: 184px;
+  min-width: 224px;
 }
 
 h1,
@@ -244,7 +244,7 @@ hr {
 }
 
 .image img {
-  max-width: 475px;
+  max-width: 350px;
   height: auto;
 }
 
@@ -266,14 +266,13 @@ hr {
     grid-template-columns: repeat(2, 1fr);
     width: 75vw;
   }
-  .content-shell,
-  .content-shell2 {
+  .content-shell {
     width: 75vw;
     min-width: 250px;
   }
 
   .image img {
-    max-width: 240px;
+    max-width: 200px;
   }
 
   #home,
