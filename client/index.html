@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/index.css">
+	<title>U.S. Roots Repository</title>
+</head>
+
+<body>
+	<nav>
+		<ul id="nav-ul">
+			<li><a id='home' href='./index.html'>U.S. Roots Repository</a></li>
+			<li><a id='bookmark-toggle'>Bookmarks</a></li>
+		</ul>
+	</nav>
+	<div id="regions-browser" class="flex-center-rows">
+		<h1 style="margin-bottom: 0.4ch">U.S. Roots Repository</h1>
+		<h3 style="margin: 0; color: blue">Powered by Wikipedia</h3>
+		<form id="us-state-select">
+			<label for="states-select">
+				<h2 style="margin: 0.75ch 0">Select a State:</h2>
+			</label>
+			<div id="state-box">
+				<select name="states" id="states-select">
+					<option value="Alabama">Alabama</option>
+					<option value="Alaska">Alaska</option>
+					<option value="Arizona">Arizona</option>
+					<option value="Arkansas">Arkansas</option>
+					<option value="California">California</option>
+					<option value="Colorado">Colorado</option>
+					<option value="Connecticut">Connecticut</option>
+					<option value="Delaware">Delaware</option>
+					<option value="Florida">Florida</option>
+					<option value="Georgia">Georgia</option>
+					<option value="Hawaii">Hawaii</option>
+					<option value="Idaho">Idaho</option>
+					<option value="Illinois">Illinois</option>
+					<option value="Indiana">Indiana</option>
+					<option value="Iowa">Iowa</option>
+					<option value="Kansas">Kansas</option>
+					<option value="Kentucky">Kentucky</option>
+					<option value="Louisiana">Louisiana</option>
+					<option value="Maine">Maine</option>
+					<option value="Maryland">Maryland</option>
+					<option value="Massachusetts">Massachusetts</option>
+					<option value="Michigan">Michigan</option>
+					<option value="Minnesota">Minnesota</option>
+					<option value="Mississippi">Mississippi</option>
+					<option value="Missouri">Missouri</option>
+					<option value="Montana">Montana</option>
+					<option value="Nebraska">Nebraska</option>
+					<option value="Nevada">Nevada</option>
+					<option value="New Hampshire">New Hampshire</option>
+					<option value="New Jersey">New Jersey</option>
+					<option value="New Mexico">New Mexico</option>
+					<option value="New York">New York</option>
+					<option value="North Carolina">North Carolina</option>
+					<option value="North Dakota">North Dakota</option>
+					<option value="Ohio">Ohio</option>
+					<option value="Oklahoma">Oklahoma</option>
+					<option value="Oregon">Oregon</option>
+					<option value="Pennsylvania">Pennsylvania</option>
+					<option value="Rhode Island">Rhode Island</option>
+					<option value="South Carolina">South Carolina</option>
+					<option value="South Dakota">South Dakota</option>
+					<option value="Tennessee">Tennessee</option>
+					<option value="Texas">Texas</option>
+					<option value="Utah">Utah</option>
+					<option value="Vermont">Vermont</option>
+					<option value="Virginia">Virginia</option>
+					<option value="Washington">Washington</option>
+					<option value="West Virginia">West Virginia</option>
+					<option value="Wisconsin">Wisconsin</option>
+					<option value="Wyoming">Wyoming</option>
+				</select>
+			</div>
+			<button type="submit">Show State Counties</button>
+		</form>
+		<div id="test-shell">
+			<img id="us-map" alt="U.S. map outline" src="https://freesvg.org/img/1539640607.png"></img>
+			<div id="page-name"></div>
+			<div id="links-shell"></div>
+			<div class="content-shell"></div>
+		</div>
+	</div>
+	<div id="bookmark-viewer" class="flex-center-cols hidden">
+		<div id="bookmark-list-shell">
+			<h3>Bookmarks</h3>
+			<hr style="width:80%">
+			<div id="bookmarks-list-box">
+				<ul id="bookmarks-list">
+				</ul>
+			</div>
+		</div>
+		<div id="bookmark-view-shell">
+			<h3>Bookmarks View Window</h3>
+			<hr style="width:70%">
+			<div id="bookmark-title"></div>
+			<div class="bookmarks-content-shell"></div>
+		</div>
+	</div>
+
+
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script src="/index.js"></script>
+</body>
+
+</html>

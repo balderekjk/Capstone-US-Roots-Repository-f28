@@ -1,0 +1,289 @@
+body {
+  margin: 0;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
+    'Lucida Sans', Arial, sans-serif;
+}
+
+#us-map {
+  width: 350px;
+}
+
+.flex-center-rows {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.flex-center-cols {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.flex-center-cols > #bookmark-list-shell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid hsl(17, 69%, 17%);
+  width: 25%;
+  min-width: 92px;
+}
+
+.flex-center-cols > #bookmark-view-shell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid hsl(17, 69%, 17%);
+  width: 75%;
+  min-height: 100vh;
+  min-width: 184px;
+}
+
+h1,
+h3 {
+  color: hsl(17, 69%, 17%);
+}
+
+nav {
+  height: 3em;
+  display: flex;
+  background: hsl(17, 69%, 17%);
+  color: hsl(25, 70%, 91%);
+}
+
+select {
+  width: 150px;
+  border-radius: 3px;
+}
+
+select:hover {
+  border: 1px solid black;
+}
+
+button {
+  width: 150px;
+  border: 1px solid hsl(0, 0%, 26%);
+  border-radius: 3px;
+  color: hsl(0, 0%, 18%);
+  transition: 0.1s;
+}
+
+button:hover {
+  cursor: pointer;
+  color: hsl(0, 0%, 4%);
+  border: 1px solid hsl(0, 0%, 4%);
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+ul,
+#bookmarks-list-box {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#bookmarks-list-box > li {
+  margin-top: 2.5ch;
+  color: blue;
+  cursor: pointer;
+}
+
+#nav-ul {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#nav-ul > li:nth-child(1) {
+  font-size: 20px;
+}
+
+#nav-ul > li {
+  margin: 0 1em;
+  cursor: pointer;
+}
+
+#nav-ul > li:hover {
+  color: hsl(25, 70%, 97%);
+  transform: scale(1.03);
+}
+
+#nav-ul > li:active {
+  transform: scale(1);
+}
+
+#nav-ul a,
+a:visited,
+a:hover,
+a:active {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+#wiki-link-a {
+  text-decoration: none;
+  color: blue;
+  cursor: pointer;
+}
+
+#wiki-link-a:hover {
+  text-decoration: underline;
+  color: hsl(240, 100%, 30%);
+}
+
+.containerize {
+  border: 2px solid hsl(17, 69%, 17%);
+  padding: 0 1.5ch;
+}
+
+#links-shell {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 80vw;
+  min-width: fit-content;
+}
+
+#links-shell p {
+  padding: 0 0.5ch;
+  color: hsl(17, 69%, 17%);
+  cursor: pointer;
+}
+
+.bookmarks-content-shell {
+  width: 75%;
+}
+
+.bookmarks-content-shell,
+.content-shell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.content-shell {
+  width: 80vw;
+}
+
+#bookmark-div {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.fa {
+  font-size: 28px;
+  color: hsl(17, 69%, 17%);
+  cursor: pointer;
+  transition-duration: 0.1s;
+}
+
+.fa:hover {
+  color: hsl(240, 100%, 30%);
+  transform: scale(1.1);
+}
+
+.fa:active {
+  transform: scale(1);
+}
+
+.activated {
+  color: hsl(240, 100%, 50%);
+}
+
+#unbookmark {
+  color: blue;
+}
+
+#unbookmark:hover {
+  color: red;
+}
+
+.tleft {
+  display: flex;
+  justify-content: center;
+}
+
+.mw-editsection,
+#History {
+  display: none;
+}
+
+hr {
+  padding: 0;
+  width: 80%;
+}
+
+.metadata,
+.hatnote,
+#coordinates,
+.infobox,
+.quotebox {
+  display: none;
+}
+
+.hatnote {
+  display: none;
+}
+
+.mw-parser-output {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mw-parser-output h2 {
+  margin: 0;
+}
+
+.image img {
+  max-width: 475px;
+  height: auto;
+}
+
+.references {
+  word-break: break-all;
+}
+
+.mw-parser-output a {
+  pointer-events: none;
+  color: black;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen and (max-width: 600px) {
+  #links-shell {
+    grid-template-columns: repeat(2, 1fr);
+    width: 75vw;
+  }
+  .content-shell,
+  .content-shell2 {
+    width: 75vw;
+    min-width: 250px;
+  }
+
+  .image img {
+    max-width: 240px;
+  }
+
+  #home,
+  h1,
+  h2,
+  h3 {
+    transform: scale(0.85);
+  }
+
+  #us-map {
+    width: 300px;
+  }
+}
