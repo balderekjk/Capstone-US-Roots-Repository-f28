@@ -9,6 +9,8 @@ app.use(cors());
 
 app.use(express.static(path.join(__dirname, '../client')));
 
+const PORT = process.env.PORT || 8000;
+
 const {
   storeBookmarkObj,
   getBookmarks,
@@ -19,4 +21,4 @@ app.post('/api/bookmarks', storeBookmarkObj);
 app.get('/api/bookmarks', getBookmarks);
 app.delete('/api/bookmarks/:id', deleteBookmark);
 
-app.listen(4000, () => console.log('Server running on 4000'));
+app.listen(PORT, () => console.log(`Server running on ${PORT}`));
