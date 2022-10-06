@@ -15,7 +15,7 @@ const bookmarkTitle = document.getElementById('bookmark-title');
 const usMap = document.querySelector('img');
 
 const baseURL = 'https://en.wikipedia.org/w/api.php';
-const localBaseURL = 'http://localhost:4000/api';
+const localBaseURL = 'https://us-roots-repository.netlify.app';
 
 let pageAlert = null;
 let parsedStorage = null;
