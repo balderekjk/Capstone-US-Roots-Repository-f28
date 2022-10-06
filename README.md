@@ -9,15 +9,15 @@ Bookmarks tab. This was made possible via the Wikipedia Action API.
 
 ### How to use
 
-####Option 1:
+#### Option 1:
 1. Visit the website [here](https://us-roots-repository.netlify.app/)
 
-####Option 2:
+#### Option 2:
 1. Clone repository to local system
 2. Install dependencies
 3. Run app on local server
 
-####Upon successful load of the app:
+#### Upon successful load of the app:
 * Select a state with dropdown and run "Show State Counties"
 * Select a county to view communities
 * Select a community to view its history
