@@ -6,8 +6,8 @@ const app = express();
 
 const corsOptions = {
   origin: 'https://us-roots-repository.netlify.app',
-  credentials: true, //access-control-allow-credentials:true
-  optionSuccessStatus: 200,
+  methods: ['GET', 'POST', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
 app.use(express.json());
