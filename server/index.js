@@ -5,7 +5,7 @@ const path = require('path');
 const app = express();
 
 const corsOptions = {
-  origin: 'https://us-roots-repository-server.herokuapp.com/',
+  origin: 'https://us-roots-repository-server.herokuapp.com/api',
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };
