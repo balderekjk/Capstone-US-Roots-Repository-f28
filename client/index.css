@@ -73,9 +73,9 @@ select:hover {
 
 button {
   width: 150px;
-  border: 1px solid hsl(0, 0%, 26%);
+  border: 1px solid #424242;
   border-radius: 3px;
-  color: hsl(0, 0%, 18%);
+  color: #2e2e2e;
   transition: 0.1s;
 }
 
