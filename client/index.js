@@ -14,7 +14,7 @@ const bookmarkTitle = document.getElementById('bookmark-title');
 const usMap = document.querySelector('img');
 
 const baseURL = 'https://en.wikipedia.org/w/api.php';
-const localBaseURL = 'http://localhost:8000/api';
+const localBaseURL = '';
 
 let pageAlert = null;
 let parsedStorage = null;
