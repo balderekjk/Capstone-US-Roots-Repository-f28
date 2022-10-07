@@ -9,7 +9,7 @@ app.use(cors());
 
 app.use(express.static(path.join(__dirname, '../client')));
 
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 
 const {
   storeBookmarkObj,
