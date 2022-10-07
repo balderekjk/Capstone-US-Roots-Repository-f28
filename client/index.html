@@ -13,13 +13,20 @@
 <body>
 	<nav>
 		<ul id="nav-ul">
-			<li><a id='home' href='./index.html'>U.S. Roots Repository</a></li>
+			<li><a id='home'>U.S. Roots Repository</a></li>
 			<li><a id='bookmark-toggle'>Bookmarks</a></li>
 		</ul>
 	</nav>
 	<div id="regions-browser" class="flex-center-rows">
 		<h1 style="margin-bottom: 0.4ch">U.S. Roots Repository</h1>
 		<h3 style="margin: 0; color: blue">Powered by Wikipedia</h3>
+		<div style="margin: 1em 0; border: 1px solid hsl(29, 100%, 15%); border-radius: 5px; padding: 1ch">
+			<h3 style="margin-top:0.4ch">Enter an alias to store<br>and see your bookmarks:</h4>
+				<input id="alias-input" type="text" placeholder="make it unique enough">
+				<button id="alias-btn">Submit Alias</button>
+				<h5 style="margin: 2ch 0 0 0; color: hsl(29, 100%, 15%)" id="alias-success">Status: No bookmarks currently
+					visible</h5>
+		</div>
 		<form id="us-state-select">
 			<label for="states-select">
 				<h2 style="margin: 0.75ch 0">Select a State:</h2>
@@ -104,8 +111,8 @@
 		</div>
 	</div>
 
-
-	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> -->
 	<script src="/index.js"></script>
 </body>
 

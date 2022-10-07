@@ -12,23 +12,33 @@ const regionsBrowser = document.getElementById('regions-browser');
 const bookmarksListBox = document.getElementById('bookmarks-list-box');
 const bookmarkTitle = document.getElementById('bookmark-title');
 const usMap = document.querySelector('img');
-
+const aliasButton = document.getElementById('alias-btn');
+const aliasInput = document.getElementById('alias-input');
+const aliasSuccess = document.getElementById('alias-success');
+const home = document.getElementById('home');
 const baseURL = 'https://en.wikipedia.org/w/api.php';
 const localBaseURL = 'https://us-roots-repository-server.herokuapp.com/api';
 
 let pageAlert = null;
 let parsedStorage = null;
 let bookmarkVisible = false;
+let currentAlias = '';
 let counter = 0;
 let sectionNACounter = 0;
 let bookmarkId = 0;
 let currentState = '';
 
+home.addEventListener('click', () => {
+  bookmarkVisible = false;
+  bookmarkViewer.classList.add('hidden');
+  regionsBrowser.classList.remove('hidden');
+});
+
 bookmarkToggle.addEventListener('click', () => {
   if (bookmarkVisible === false) {
+    getBookmarks();
     bookmarkViewer.classList.remove('hidden');
     regionsBrowser.classList.add('hidden');
-    getBookmarks();
   } else {
     bookmarkViewer.classList.add('hidden');
     regionsBrowser.classList.remove('hidden');
@@ -51,14 +61,28 @@ stateSubmit.addEventListener('submit', (e) => {
   );
 });
 
+const submitAlias = () => {
+  if (aliasInput.value.length >= 4) {
+    currentAlias = aliasInput.value;
+    aliasSuccess.textContent = `Status: Now viewing/storing "${aliasInput.value}'s" bookmarks`;
+    aliasInput.value = '';
+  } else {
+    aliasSuccess.textContent = `Status: Please enter at least 3 characters`;
+  }
+};
+
 const populateLocalAPI = () => {
   let itemVals = Object.keys(localStorage);
   itemVals.forEach((item) => {
     parsedStorage = JSON.parse(localStorage.getItem(item));
-    console.log(parsedStorage);
     storeBookmarkObj(parsedStorage);
   });
 };
+
+aliasButton.addEventListener('click', () => {
+  submitAlias();
+  getBookmarks();
+});
 
 //sectionQueryString i.e. section=3&; if none empty string ''
 const getWikiGrouping = (page, propTypes, sectionQueryString) => {
@@ -72,7 +96,6 @@ const getWikiGrouping = (page, propTypes, sectionQueryString) => {
 };
 
 const deleteBookmark = (id) => {
-  localStorage.clear(parsedStorage);
   axios
     .delete(`${localBaseURL}/bookmarks/${id}`)
     .then(() => {
@@ -83,12 +106,15 @@ const deleteBookmark = (id) => {
 
 const getBookmarks = () => {
   axios.get(`${localBaseURL}/bookmarks`).then((res) => {
+    res = res.data;
+    let displayList = res.filter(
+      (bookmark) => bookmark['alias'] === currentAlias
+    );
     bookmarksContentShell.classList.remove('containerize');
     bookmarksListBox.textContent = '';
     bookmarksContentShell.textContent = '';
     bookmarkTitle.textContent = '';
-    res = res.data;
-    res.forEach((rep) => {
+    displayList.forEach((rep) => {
       let bookmark = document.createElement('li');
       bookmark.append(rep['page']);
       bookmark.addEventListener('click', () => {
@@ -102,7 +128,7 @@ const getBookmarks = () => {
           bookmarksContentShell.classList.add('containerize');
           let unbookmark = document.getElementById('unbookmark');
           unbookmark.addEventListener('click', () => {
-            deleteBookmark(rep['sectionId']);
+            deleteBookmark(rep['id']);
           });
         });
       });
@@ -127,14 +153,17 @@ const storeBookmarkObj = (body) => {
     });
 };
 
-const createBookmarkObj = (page, sectionId) => {
+populateLocalAPI();
+
+const createBookmarkObj = (page, sectionId, alias) => {
   let bookmarkData = {
-    id: page,
+    id: page.concat(alias),
     page: page,
     sectionId: sectionId,
+    alias: alias,
   };
 
-  localStorage.setItem(`${page}`, JSON.stringify(bookmarkData));
+  localStorage.setItem(page.concat(alias), JSON.stringify(bookmarkData));
   storeBookmarkObj(bookmarkData);
 };
 
@@ -170,10 +199,9 @@ const printWikiGrouping = (
         pageAlert = document.getElementById('page-alert');
         bookmark.addEventListener('click', () => {
           bookmark.classList.add('activated');
-          createBookmarkObj(page, bookmarkId);
+          createBookmarkObj(page, bookmarkId, currentAlias);
         });
         if (contentShell.textContent.includes('Redirect to')) {
-          console.log(contentShell.textContent);
           let slice1 = contentShell.textContent.indexOf(':') + 1;
           let slice2 = 0;
           if (contentShell.textContent.indexOf('.mw') !== -1) {
@@ -184,7 +212,6 @@ const printWikiGrouping = (
             slice2 = slice1 + addValue;
           }
           let sliced = contentShell.textContent.slice(slice1, slice2);
-          console.log(sliced);
           printWikiGrouping(sliced, 'sections', '', 'History', '');
         }
       } else {
