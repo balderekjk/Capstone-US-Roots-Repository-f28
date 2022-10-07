@@ -8,12 +8,16 @@ bookmark the history snippet for later viewing. Bookmarks can be removed in the
 Bookmarks tab. This was made possible via the Wikipedia Action API.
 
 ### How to use
-*Note: App is still in development mode, may upload later*
 
+#### Option 1:
+1. Visit the website [here](https://us-roots-repository.netlify.app/)
+
+#### Option 2:
 1. Clone repository to local system
 2. Install dependencies
 3. Run app on local server
-4. When app is viewable
+
+#### Upon successful load of the app:
 * Select a state with dropdown and run "Show State Counties"
 * Select a county to view communities
 * Select a community to view its history
