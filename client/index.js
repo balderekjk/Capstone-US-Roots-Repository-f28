@@ -71,14 +71,6 @@ const submitAlias = () => {
   }
 };
 
-// const populateLocalAPI = () => {
-//   let itemVals = Object.keys(localStorage);
-//   itemVals.forEach((item) => {
-//     parsedStorage = JSON.parse(localStorage.getItem(item));
-//     storeBookmarkObj(parsedStorage);
-//   });
-// };
-
 aliasButton.addEventListener('click', () => {
   submitAlias();
   getBookmarks();
@@ -152,8 +144,6 @@ const storeBookmarkObj = (body) => {
       }
     });
 };
-
-// populateLocalAPI();
 
 const createBookmarkObj = (page, sectionId, alias) => {
   let bookmarkData = {
@@ -285,5 +275,3 @@ const printWikiGrouping = (
     }
   });
 };
-
-// populateLocalAPI();

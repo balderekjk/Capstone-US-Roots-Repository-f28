@@ -1,3 +1,13 @@
+/* html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+} */
+
 body {
   margin: 0;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
@@ -227,6 +237,10 @@ hr {
 .infobox,
 .quotebox {
   display: none;
+}
+
+.thumbinner {
+  max-width: 230px;
 }
 
 .hatnote {
