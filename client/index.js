@@ -286,4 +286,4 @@ const printWikiGrouping = (
   });
 };
 
-populateLocalAPI();
+// populateLocalAPI();
