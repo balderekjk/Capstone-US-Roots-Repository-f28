@@ -4,14 +4,14 @@ const path = require('path');
 
 const app = express();
 
-const corsOptions = {
-  origin: 'https://us-roots-repository.netlify.app',
-  methods: ['GET', 'POST', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-};
+// const corsOptions = {
+//   origin: 'https://us-roots-repository.netlify.app',
+//   methods: ['GET', 'POST', 'DELETE'],
+//   allowedHeaders: ['Content-Type', 'Authorization'],
+// };
 
 app.use(express.json());
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use(express.static(path.join(__dirname, '../client')));
 
