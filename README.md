@@ -3,9 +3,7 @@
 ### Short Description
 * With this app users can basically paginate through communities by U.S. counties,
 and see the history of the community they are interested in seeing right within
-the app. Users can visit the wiki page where it is sourced from. Users can also
-bookmark the history snippet for later viewing. Bookmarks can be removed in the
-Bookmarks tab. This was made possible via the Wikipedia Action API.
+the app. Users can visit the wiki page where it is sourced from. Users can also enter an alias and bookmark the history snippet for later viewing, as long as they are "logged in" as that alias. Bookmarks can be removed in the Bookmarks tab. This was made possible via the Wikipedia Action API.
 
 ### How to use
 
@@ -15,9 +13,11 @@ Bookmarks tab. This was made possible via the Wikipedia Action API.
 #### Option 2:
 1. Clone repository to local system
 2. Install dependencies
-3. Run app on local server
+3. Modify in client index.js 'localBaseURL' to run locally
+3. Run app on local server with node/nodemon
 
 #### Upon successful load of the app:
+* (Optional to view/store bookmarks) Enter an alias name
 * Select a state with dropdown and run "Show State Counties"
 * Select a county to view communities
 * Select a community to view its history
