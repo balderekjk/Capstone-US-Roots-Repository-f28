@@ -89,10 +89,6 @@ button:active {
   transform: scale(0.97);
 }
 
-input:read-only:not(input[type='submit']) {
-  background: #f0f0f0;
-}
-
 ul,
 #bookmarks-list-box {
   list-style: none;
