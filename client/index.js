@@ -210,7 +210,6 @@ const printWikiGrouping = (
             slice2 = slice1 + addValue;
           } else {
             slice2 = contentShell.textContent.length - 1;
-            console.log(slice2);
           }
           let sliced = contentShell.textContent.slice(slice1, slice2);
           printWikiGrouping(sliced, 'sections', '', 'History', '');
@@ -248,9 +247,16 @@ const printWikiGrouping = (
           }
           if (sectionNACounter !== 3) {
             res.forEach((link) => {
+              if (link[propAttr].includes('Saint')) {
+                link[propAttr] = link[propAttr].replace('Saint', 'St.');
+              }
               if (
-                link[propAttr].includes(`, ${currentState}`) &&
+                !link[propAttr].includes('Consolidated') &&
+                !link[propAttr].includes('equivalent') &&
+                !link[propAttr].includes('List') &&
                 link[propAttr] !== currentState &&
+                !link[propAttr].includes('United States') &&
+                link[propAttr] !== `${currentState} (state)` &&
                 link['exists'] === ''
               ) {
                 let propTypeText = document.createElement('p');
