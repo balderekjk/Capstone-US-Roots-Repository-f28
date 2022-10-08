@@ -83,6 +83,29 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
+const populateLocalAPI = () => {
+  let itemVals = Object.keys(localStorage);
+  itemVals.forEach((item) => {
+    parsedStorage = JSON.parse(localStorage.getItem(item));
+    storeBookmarkObj(parsedStorage);
+  });
+};
+
+const serverResetHandle = () => {
+  axios
+    .get(`${localBaseURL}/bookmarks`)
+    .then((res) => {
+      res = res.data;
+      if (res.length === 0) {
+        populateLocalAPI();
+      }
+      return;
+    })
+    .catch((err) => console.log(err));
+};
+
+serverResetHandle();
+
 //sectionQueryString i.e. section=3&; if none empty string ''
 const getWikiGrouping = (page, propTypes, sectionQueryString) => {
   return axios
@@ -135,6 +158,8 @@ const getBookmarks = () => {
     });
   });
 };
+
+getBookmarks();
 
 const storeBookmarkObj = (body) => {
   axios
@@ -199,14 +224,17 @@ const printWikiGrouping = (
           createBookmarkObj(page, bookmarkId, currentAlias);
         });
         if (contentShell.textContent.includes('Redirect to')) {
-          console.log(contentShell.textContent);
           let slice1 = contentShell.textContent.indexOf(':') + 1;
           let slice2 = 0;
           if (contentShell.textContent.indexOf('.mw') !== -1) {
             slice2 = contentShell.textContent.indexOf('.mw');
-          } else if (contentShell.textContent.indexOf('F') !== -1) {
+          } else if (contentShell.textContent.indexOf('From') !== -1) {
             let substr = contentShell.textContent.substring(slice1);
-            let addValue = substr.indexOf('F') - 1;
+            let addValue = substr.indexOf('From ') - 1;
+            slice2 = slice1 + addValue;
+          } else if (contentShell.textContent.indexOf('To ') !== -1) {
+            let substr = contentShell.textContent.substring(slice1);
+            let addValue = substr.indexOf('To ') - 1;
             slice2 = slice1 + addValue;
           } else {
             slice2 = contentShell.textContent.length - 1;
