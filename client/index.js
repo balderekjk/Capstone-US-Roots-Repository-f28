@@ -71,9 +71,16 @@ const submitAlias = () => {
   }
 };
 
-aliasButton.addEventListener('click', () => {
+aliasButton.addEventListener('click', (e) => {
   submitAlias();
   getBookmarks();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    const event = new Event('click');
+    aliasButton.dispatchEvent(event);
+  }
 });
 
 //sectionQueryString i.e. section=3&; if none empty string ''
