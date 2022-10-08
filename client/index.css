@@ -282,9 +282,14 @@ hr {
     grid-template-columns: repeat(2, 1fr);
     width: 75vw;
   }
+
   .content-shell {
     width: 75vw;
     min-width: 250px;
+  }
+
+  .thumbinner {
+    max-width: 200px;
   }
 
   .image img {
