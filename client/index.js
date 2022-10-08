@@ -247,6 +247,9 @@ const printWikiGrouping = (
           }
           if (sectionNACounter !== 3) {
             res.forEach((link) => {
+              if (link[propAttr].includes('Sainte')) {
+                link[propAttr] = link[propAttr].replace('Sainte', 'Ste.');
+              }
               if (link[propAttr].includes('Saint')) {
                 link[propAttr] = link[propAttr].replace('Saint', 'St.');
               }
