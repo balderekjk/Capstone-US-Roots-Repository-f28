@@ -62,12 +62,13 @@ nav {
   color: hsl(25, 70%, 91%);
 }
 
-select {
+#states-select {
   width: 150px;
   border-radius: 3px;
+  color: black;
 }
 
-select:hover {
+#states-select:hover {
   border: 1px solid black;
 }
 
