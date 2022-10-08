@@ -192,14 +192,18 @@ const printWikiGrouping = (
           createBookmarkObj(page, bookmarkId, currentAlias);
         });
         if (contentShell.textContent.includes('Redirect to')) {
+          console.log(contentShell.textContent);
           let slice1 = contentShell.textContent.indexOf(':') + 1;
           let slice2 = 0;
           if (contentShell.textContent.indexOf('.mw') !== -1) {
             slice2 = contentShell.textContent.indexOf('.mw');
-          } else {
+          } else if (contentShell.textContent.indexOf('F') !== -1) {
             let substr = contentShell.textContent.substring(slice1);
             let addValue = substr.indexOf('F') - 1;
             slice2 = slice1 + addValue;
+          } else {
+            slice2 = contentShell.textContent.length - 1;
+            console.log(slice2);
           }
           let sliced = contentShell.textContent.slice(slice1, slice2);
           printWikiGrouping(sliced, 'sections', '', 'History', '');
