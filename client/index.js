@@ -27,6 +27,7 @@ let counter = 0;
 let sectionNACounter = 0;
 let bookmarkId = 0;
 let currentState = '';
+let recentCountyClick = '';
 
 home.addEventListener('click', () => {
   bookmarkVisible = false;
@@ -216,12 +217,18 @@ const printWikiGrouping = (
       res = res['*'];
       if (counter === 1) {
         pageName.innerHTML = `<h2>${page}<br>History</h2> <h4 id="page-alert">Please bookmark if you'd like to revisit</h4>`;
-        contentShell.innerHTML = `<div id='bookmark-div'><div><a id='wiki-link-a' href='https://en.wikipedia.org/wiki/${page}#History' target='_blank' rel='noreferrer noopener'>Visit Wiki Page</a></div><i id="bookmark" class="fa fa-bookmark-o"></i></div>${res}`;
+        contentShell.innerHTML = `<div id='bookmark-div'><div id="back-button">\<</div><div><a id='wiki-link-a' href='https://en.wikipedia.org/wiki/${page}#History' target='_blank' rel='noreferrer noopener'>Visit Wiki Page</a></div><i id="bookmark" class="fa fa-bookmark-o"></i></div>${res}`;
         let bookmark = document.getElementById('bookmark');
+        let backButton = document.getElementById('back-button');
         pageAlert = document.getElementById('page-alert');
         bookmark.addEventListener('click', () => {
           bookmark.classList.add('activated');
           createBookmarkObj(page, bookmarkId, currentAlias);
+        });
+        backButton.addEventListener('click', () => {
+          counter = 0;
+          sectionNACounter = 0;
+          printWikiGrouping(recentCountyClick, 'links', '', 'Communities', '');
         });
         if (contentShell.textContent.includes('Redirect to')) {
           console.log(contentShell.textContent);
@@ -272,6 +279,7 @@ const printWikiGrouping = (
           if (counter === 0) {
             pageName.innerHTML = `<h2>${page}</h2> <h4>Click county name to view its communities</h4>`;
           } else if (counter === 1 && sectionNACounter !== 3) {
+            recentCountyClick = page;
             pageName.innerHTML = `<h2>${page}</h2> <h4>Click location name to view its history</h4>`;
           }
           if (sectionNACounter !== 3) {
@@ -301,10 +309,15 @@ const printWikiGrouping = (
                 !link[propAttr].includes('reservation') &&
                 !link[propAttr].includes('ensus') &&
                 !link[propAttr].includes('nclaves') &&
+                !link[propAttr].includes('town') &&
+                !link[propAttr].includes('identifier') &&
                 !link[propAttr].includes('Wayback Machine') &&
                 !link[propAttr].includes('List') &&
+                !link[propAttr].includes(' code') &&
+                !link[propAttr].includes('De jure') &&
                 !link[propAttr].includes(':') &&
-                !link[propAttr].includes('uffpost') &&
+                !link[propAttr].includes('Huffpost') &&
+                !link[propAttr].includes('Bloomberg News') &&
                 !link[propAttr].includes('xpedition') &&
                 !link[propAttr].includes('township') &&
                 !link[propAttr].includes('United States') &&

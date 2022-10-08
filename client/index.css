@@ -190,14 +190,16 @@ a:active {
   align-items: center;
 }
 
-.fa {
+.fa,
+#back-button {
   font-size: 28px;
   color: hsl(17, 69%, 17%);
   cursor: pointer;
   transition-duration: 0.1s;
 }
 
-.fa:hover {
+.fa:hover,
+#back-button:hover {
   color: hsl(240, 100%, 30%);
   transform: scale(1.1);
 }
