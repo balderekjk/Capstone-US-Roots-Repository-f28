@@ -76,7 +76,6 @@ button {
   border: 1px solid #424242;
   border-radius: 3px;
   color: #2e2e2e;
-  background-color: #f0f0f0;
   transition: 0.1s;
 }
 
@@ -88,6 +87,10 @@ button:hover {
 
 button:active {
   transform: scale(0.97);
+}
+
+input:read-only:not(input[type='submit']) {
+  background: #f0f0f0;
 }
 
 ul,
