@@ -224,6 +224,7 @@ const printWikiGrouping = (
           createBookmarkObj(page, bookmarkId, currentAlias);
         });
         if (contentShell.textContent.includes('Redirect to')) {
+          console.log(contentShell.textContent);
           let slice1 = contentShell.textContent.indexOf(':') + 1;
           let slice2 = 0;
           if (contentShell.textContent.indexOf('.mw') !== -1) {
@@ -271,9 +272,10 @@ const printWikiGrouping = (
           if (counter === 0) {
             pageName.innerHTML = `<h2>${page}</h2> <h4>Click county name to view its communities</h4>`;
           } else if (counter === 1 && sectionNACounter !== 3) {
-            pageName.innerHTML = `<h2>${page}</h2> <h4>Click community name to view its history</h4>`;
+            pageName.innerHTML = `<h2>${page}</h2> <h4>Click location name to view its history</h4>`;
           }
           if (sectionNACounter !== 3) {
+            let searchResult = null;
             res.forEach((link) => {
               if (link[propAttr].includes('Sainte')) {
                 link[propAttr] = link[propAttr].replace('Sainte', 'Ste.');
@@ -281,39 +283,63 @@ const printWikiGrouping = (
               if (link[propAttr].includes('Saint')) {
                 link[propAttr] = link[propAttr].replace('Saint', 'St.');
               }
+              if (currentState === 'New Hampshire') {
+                if (link[propAttr].includes('Coos ')) {
+                  searchResult = 'Coös County, New Hampshire';
+                }
+              }
+              if (currentState === 'Florida') {
+                if (link[propAttr].includes('Miami-Dade')) {
+                  searchResult =
+                    'List of communities in Miami-Dade County, Florida';
+                }
+              }
               if (
-                !link[propAttr].includes('Consolidated') &&
-                !link[propAttr].includes('equivalent') &&
+                !link[propAttr].includes('onsolidated') &&
+                !link[propAttr].includes('quivalent') &&
+                !link[propAttr].includes('orporated') &&
+                !link[propAttr].includes('reservation') &&
+                !link[propAttr].includes('ensus') &&
+                !link[propAttr].includes('nclaves') &&
+                !link[propAttr].includes('Wayback Machine') &&
                 !link[propAttr].includes('List') &&
-                link[propAttr] !== currentState &&
+                !link[propAttr].includes(':') &&
+                !link[propAttr].includes('uffpost') &&
+                !link[propAttr].includes('xpedition') &&
+                !link[propAttr].includes('township') &&
                 !link[propAttr].includes('United States') &&
+                link[propAttr] !== currentState &&
                 link[propAttr] !== `${currentState} (state)` &&
                 link['exists'] === ''
               ) {
-                let propTypeText = document.createElement('p');
-                propTypeText.textContent = link[propAttr];
-                propTypeText.addEventListener('click', (e) => {
-                  if (counter === 0) {
-                    printWikiGrouping(
-                      e.target.childNodes[0].data,
-                      'links',
-                      '',
-                      'Communities',
-                      linkTermFilter
-                    );
-                    counter = 1;
-                  } else if (counter === 1) {
-                    printWikiGrouping(
-                      e.target.childNodes[0].data,
-                      'sections',
-                      '',
-                      'History',
-                      ''
-                    );
-                  }
-                });
-                linksShell.append(propTypeText);
-                linksShell.classList.add('containerize');
+                if (!linksShell.textContent.includes(link[propAttr])) {
+                  let propTypeText = document.createElement('p');
+                  propTypeText.textContent = link[propAttr];
+                  propTypeText.addEventListener('click', (e) => {
+                    if (counter === 0) {
+                      printWikiGrouping(
+                        searchResult
+                          ? searchResult
+                          : e.target.childNodes[0].data,
+                        'links',
+                        '',
+                        'Communities',
+                        linkTermFilter
+                      );
+                      counter = 1;
+                    } else if (counter === 1) {
+                      printWikiGrouping(
+                        e.target.childNodes[0].data,
+                        'sections',
+                        '',
+                        'History',
+                        ''
+                      );
+                    }
+                  });
+                  linksShell.append(propTypeText);
+                  linksShell.classList.add('containerize');
+                }
               }
             });
           }
