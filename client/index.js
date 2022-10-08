@@ -244,7 +244,6 @@ const printWikiGrouping = (
               if (
                 link[propAttr].includes(`, ${currentState}`) &&
                 link[propAttr] !== currentState &&
-                !link[propAttr].includes('List') &&
                 link['exists'] === ''
               ) {
                 let propTypeText = document.createElement('p');
