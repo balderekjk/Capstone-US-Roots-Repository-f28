@@ -190,6 +190,8 @@ const storeBookmarkObj = (body) => {
           pageAlert.textContent = 'This mark is already in the book';
         }
       });
+  } else {
+    pageAlert.textContent = 'Oops... enter an alias first';
   }
 };
 
@@ -249,6 +251,7 @@ const printWikiGrouping = (
         backButton.addEventListener('click', () => {
           linksShell.style.display = 'grid';
           contentShell.classList.add('hidden');
+          pageAlert.textContent = 'Click location name to view its history';
         });
         if (contentShell.textContent.includes('Redirect to')) {
           let slice1 = contentShell.textContent.indexOf(':') + 1;
