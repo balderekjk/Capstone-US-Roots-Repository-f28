@@ -33,24 +33,11 @@ const populateLocalAPI = () => {
   let itemVals = Object.keys(localStorage);
   itemVals.forEach((item) => {
     parsedStorage = JSON.parse(localStorage.getItem(item));
-    storeBookmarkObj(parsedStorage);
+    if (parsedStorage.alias === currentAlias) {
+      storeBookmarkObj(parsedStorage);
+    }
   });
 };
-
-const serverResetHandle = () => {
-  axios
-    .get(`${localBaseURL}/bookmarks`)
-    .then((res) => {
-      res = res.data;
-      if (res.length === 0) {
-        populateLocalAPI();
-      }
-      return;
-    })
-    .catch((err) => console.log(err));
-};
-
-serverResetHandle();
 
 home.addEventListener('click', () => {
   bookmarkVisible = false;
@@ -90,6 +77,7 @@ stateSubmit.addEventListener('submit', (e) => {
 const submitAlias = () => {
   if (aliasInput.value.length >= 4) {
     currentAlias = aliasInput.value;
+    populateLocalAPI();
     populateLocalStorage();
     aliasSuccess.textContent = `Status: Now viewing/storing "${aliasInput.value}'s" bookmarks`;
     aliasInput.value = '';
