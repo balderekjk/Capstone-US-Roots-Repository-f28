@@ -28,6 +28,29 @@ let sectionNACounter = 0;
 let bookmarkId = 0;
 let currentState = '';
 
+const populateLocalAPI = () => {
+  let itemVals = Object.keys(localStorage);
+  itemVals.forEach((item) => {
+    parsedStorage = JSON.parse(localStorage.getItem(item));
+    storeBookmarkObj(parsedStorage);
+  });
+};
+
+const serverResetHandle = () => {
+  axios
+    .get(`${localBaseURL}/bookmarks`)
+    .then((res) => {
+      res = res.data;
+      if (res.length === 0) {
+        populateLocalAPI();
+      }
+      return;
+    })
+    .catch((err) => console.log(err));
+};
+
+serverResetHandle();
+
 home.addEventListener('click', () => {
   bookmarkVisible = false;
   bookmarkViewer.classList.add('hidden');
@@ -86,14 +109,6 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-const populateLocalAPI = () => {
-  let itemVals = Object.keys(localStorage);
-  itemVals.forEach((item) => {
-    parsedStorage = JSON.parse(localStorage.getItem(item));
-    storeBookmarkObj(parsedStorage);
-  });
-};
-
 const populateLocalStorage = () => {
   axios.get(`${localBaseURL}/bookmarks`).then((res) => {
     res = res.data;
@@ -105,21 +120,6 @@ const populateLocalStorage = () => {
     return;
   });
 };
-
-const serverResetHandle = () => {
-  axios
-    .get(`${localBaseURL}/bookmarks`)
-    .then((res) => {
-      res = res.data;
-      if (res.length === 0) {
-        populateLocalAPI();
-      }
-      return;
-    })
-    .catch((err) => console.log(err));
-};
-
-serverResetHandle();
 
 //sectionQueryString i.e. section=3&; if none empty string ''
 const getWikiGrouping = (page, propTypes, sectionQueryString) => {
@@ -174,8 +174,6 @@ const getBookmarks = () => {
     });
   });
 };
-
-getBookmarks();
 
 const storeBookmarkObj = (body) => {
   axios
