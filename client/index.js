@@ -27,6 +27,7 @@ let counter = 0;
 let sectionNACounter = 0;
 let bookmarkId = 0;
 let currentState = '';
+let currentCounty = '';
 
 const populateLocalAPI = () => {
   let itemVals = Object.keys(localStorage);
@@ -251,7 +252,7 @@ const printWikiGrouping = (
         backButton.addEventListener('click', () => {
           linksShell.style.display = 'grid';
           contentShell.classList.add('hidden');
-          pageAlert.textContent = 'Click location name to view its history';
+          pageName.innerHTML = `<h2>${currentCounty}</h2> <h4>Click location name to view its history</h4>`;
         });
         if (contentShell.textContent.includes('Redirect to')) {
           let slice1 = contentShell.textContent.indexOf(':') + 1;
@@ -301,6 +302,7 @@ const printWikiGrouping = (
           if (counter === 0) {
             pageName.innerHTML = `<h2>${page}</h2> <h4>Click county name to view its communities</h4>`;
           } else if (counter === 1 && sectionNACounter !== 3) {
+            currentCounty = page;
             pageName.innerHTML = `<h2>${page}</h2> <h4>Click location name to view its history</h4>`;
           }
           if (sectionNACounter !== 3) {
