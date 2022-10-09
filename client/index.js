@@ -27,7 +27,6 @@ let counter = 0;
 let sectionNACounter = 0;
 let bookmarkId = 0;
 let currentState = '';
-let recentCountyClick = '';
 
 home.addEventListener('click', () => {
   bookmarkVisible = false;
@@ -49,6 +48,8 @@ bookmarkToggle.addEventListener('click', () => {
 
 stateSubmit.addEventListener('submit', (e) => {
   if (!usMap.classList.contains('hidden')) usMap.classList.add('hidden');
+  linksShell.classList.remove('hidden');
+  contentShell.classList.add('hidden');
   currentState = statesSelect.value;
   counter = 0;
   sectionNACounter = 0;
@@ -65,6 +66,7 @@ stateSubmit.addEventListener('submit', (e) => {
 const submitAlias = () => {
   if (aliasInput.value.length >= 4) {
     currentAlias = aliasInput.value;
+    populateLocalStorage();
     aliasSuccess.textContent = `Status: Now viewing/storing "${aliasInput.value}'s" bookmarks`;
     aliasInput.value = '';
   } else {
@@ -89,6 +91,18 @@ const populateLocalAPI = () => {
   itemVals.forEach((item) => {
     parsedStorage = JSON.parse(localStorage.getItem(item));
     storeBookmarkObj(parsedStorage);
+  });
+};
+
+const populateLocalStorage = () => {
+  axios.get(`${localBaseURL}/bookmarks`).then((res) => {
+    res = res.data;
+    res.forEach((bookmark) => {
+      if (bookmark.id === currentAlias) {
+        localStorage.setItem(bookmark.id, JSON.stringify(bookmark));
+      }
+    });
+    return;
   });
 };
 
@@ -119,6 +133,7 @@ const getWikiGrouping = (page, propTypes, sectionQueryString) => {
 };
 
 const deleteBookmark = (id) => {
+  localStorage.removeItem(id);
   axios
     .delete(`${localBaseURL}/bookmarks/${id}`)
     .then(() => {
@@ -199,9 +214,14 @@ const printWikiGrouping = (
   term,
   linkTermFilter
 ) => {
-  linksShell.classList.remove('containerize');
   pageName.textContent = '';
-  linksShell.textContent = '';
+  if (counter !== 1) {
+    linksShell.style.display = 'grid';
+    linksShell.classList.remove('containerize');
+    linksShell.textContent = '';
+  } else {
+    linksShell.style.display = 'none';
+  }
   contentShell.textContent = '';
   let propAttr = '';
   let linkPropType = false;
@@ -216,6 +236,7 @@ const printWikiGrouping = (
     if (propTypes === 'wikitext' || propTypes === 'text') {
       res = res['*'];
       if (counter === 1) {
+        contentShell.classList.remove('hidden');
         pageName.innerHTML = `<h2>${page}<br>History</h2> <h4 id="page-alert">Please bookmark if you'd like to revisit</h4>`;
         contentShell.innerHTML = `<div id='bookmark-div'><div id="back-button">\<</div><div><a id='wiki-link-a' href='https://en.wikipedia.org/wiki/${page}#History' target='_blank' rel='noreferrer noopener'>Visit Wiki Page</a></div><i id="bookmark" class="fa fa-bookmark-o"></i></div>${res}`;
         let bookmark = document.getElementById('bookmark');
@@ -226,12 +247,10 @@ const printWikiGrouping = (
           createBookmarkObj(page, bookmarkId, currentAlias);
         });
         backButton.addEventListener('click', () => {
-          counter = 0;
-          sectionNACounter = 0;
-          printWikiGrouping(recentCountyClick, 'links', '', 'Communities', '');
+          linksShell.style.display = 'grid';
+          contentShell.classList.add('hidden');
         });
         if (contentShell.textContent.includes('Redirect to')) {
-          console.log(contentShell.textContent);
           let slice1 = contentShell.textContent.indexOf(':') + 1;
           let slice2 = 0;
           if (contentShell.textContent.indexOf('.mw') !== -1) {
@@ -279,7 +298,6 @@ const printWikiGrouping = (
           if (counter === 0) {
             pageName.innerHTML = `<h2>${page}</h2> <h4>Click county name to view its communities</h4>`;
           } else if (counter === 1 && sectionNACounter !== 3) {
-            recentCountyClick = page;
             pageName.innerHTML = `<h2>${page}</h2> <h4>Click location name to view its history</h4>`;
           }
           if (sectionNACounter !== 3) {
@@ -303,6 +321,7 @@ const printWikiGrouping = (
                 }
               }
               if (
+                !link[propAttr].includes('unicipalit') &&
                 !link[propAttr].includes('onsolidated') &&
                 !link[propAttr].includes('quivalent') &&
                 !link[propAttr].includes('orporated') &&
@@ -315,12 +334,14 @@ const printWikiGrouping = (
                 !link[propAttr].includes('List') &&
                 !link[propAttr].includes(' code') &&
                 !link[propAttr].includes('De jure') &&
+                !link[propAttr].includes('Hectare') &&
                 !link[propAttr].includes(':') &&
                 !link[propAttr].includes('Huffpost') &&
-                !link[propAttr].includes('Bloomberg News') &&
                 !link[propAttr].includes('xpedition') &&
                 !link[propAttr].includes('township') &&
                 !link[propAttr].includes('United States') &&
+                link[propAttr] !== 'Acre' &&
+                link[propAttr] !== 'Bloomberg News' &&
                 link[propAttr] !== currentState &&
                 link[propAttr] !== `${currentState} (state)` &&
                 link['exists'] === ''
