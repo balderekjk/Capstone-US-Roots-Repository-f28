@@ -176,19 +176,21 @@ const getBookmarks = () => {
 };
 
 const storeBookmarkObj = (body) => {
-  axios
-    .post(`${localBaseURL}/bookmarks`, body)
-    .then((res) => {
-      if (pageAlert) {
-        pageAlert.textContent = "Nice! View this snippet at 'Bookmarks'";
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-      if (pageAlert) {
-        pageAlert.textContent = 'This mark is already in the book';
-      }
-    });
+  if (currentAlias.length >= 4) {
+    axios
+      .post(`${localBaseURL}/bookmarks`, body)
+      .then((res) => {
+        if (pageAlert) {
+          pageAlert.textContent = "Nice! View this snippet at 'Bookmarks'";
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        if (pageAlert) {
+          pageAlert.textContent = 'This mark is already in the book';
+        }
+      });
+  }
 };
 
 const createBookmarkObj = (page, sectionId, alias) => {
