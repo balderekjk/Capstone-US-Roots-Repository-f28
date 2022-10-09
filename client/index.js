@@ -19,7 +19,7 @@ const home = document.getElementById('home');
 const baseURL = 'https://en.wikipedia.org/w/api.php';
 const localBaseURL = 'https://us-roots-repository-server.herokuapp.com/api';
 
-let pageAlert = null;
+let pageAlert = '';
 let parsedStorage = null;
 let bookmarkVisible = false;
 let currentAlias = '';
@@ -218,7 +218,7 @@ const printWikiGrouping = (
   linkTermFilter
 ) => {
   pageName.textContent = '';
-  if (counter !== 1) {
+  if (counter <= 1) {
     linksShell.style.display = 'grid';
     linksShell.classList.remove('containerize');
     linksShell.textContent = '';
@@ -305,9 +305,35 @@ const printWikiGrouping = (
             currentCounty = page;
             pageName.innerHTML = `<h2>${page}</h2> <h4>Click location name to view its history</h4>`;
           }
-          if (sectionNACounter !== 3) {
-            let searchResult = null;
-            res.forEach((link) => {
+          // if (sectionNACounter !== 3) {
+          res.forEach((link) => {
+            if (
+              !link[propAttr].includes('unicipalit') &&
+              !link[propAttr].includes('onsolidated') &&
+              !link[propAttr].includes('quivalent') &&
+              !link[propAttr].includes('orporated') &&
+              !link[propAttr].includes('reservation') &&
+              !link[propAttr].includes('ensus') &&
+              !link[propAttr].includes('nclaves') &&
+              !link[propAttr].includes('town') &&
+              !link[propAttr].includes('identifier') &&
+              !link[propAttr].includes('Wayback Machine') &&
+              !link[propAttr].includes('List') &&
+              !link[propAttr].includes(' code') &&
+              !link[propAttr].includes('De jure') &&
+              !link[propAttr].includes('Hectare') &&
+              !link[propAttr].includes(':') &&
+              !link[propAttr].includes('HuffPost') &&
+              !link[propAttr].includes('xpedition') &&
+              !link[propAttr].includes('township') &&
+              !link[propAttr].includes('United States') &&
+              link[propAttr] !== 'County' &&
+              link[propAttr] !== 'Acre' &&
+              link[propAttr] !== 'Bloomberg News' &&
+              link[propAttr] !== currentState &&
+              link[propAttr] !== `${currentState} (state)` &&
+              link['exists'] === ''
+            ) {
               if (link[propAttr].includes('Sainte')) {
                 link[propAttr] = link[propAttr].replace('Sainte', 'Ste.');
               }
@@ -316,72 +342,46 @@ const printWikiGrouping = (
               }
               if (currentState === 'New Hampshire') {
                 if (link[propAttr].includes('Coos ')) {
-                  searchResult = 'Coös County, New Hampshire';
+                  link[propAttr] = link[propAttr].replace('Coos', 'Coös');
                 }
               }
               if (currentState === 'Florida') {
                 if (link[propAttr].includes('Miami-Dade')) {
-                  searchResult =
-                    'List of communities in Miami-Dade County, Florida';
+                  link[propAttr] = link[propAttr].replace(
+                    'Miami-Dade County, Florida',
+                    'List of communities in Miami-Dade County, Florida'
+                  );
                 }
               }
-              if (
-                !link[propAttr].includes('unicipalit') &&
-                !link[propAttr].includes('onsolidated') &&
-                !link[propAttr].includes('quivalent') &&
-                !link[propAttr].includes('orporated') &&
-                !link[propAttr].includes('reservation') &&
-                !link[propAttr].includes('ensus') &&
-                !link[propAttr].includes('nclaves') &&
-                !link[propAttr].includes('town') &&
-                !link[propAttr].includes('identifier') &&
-                !link[propAttr].includes('Wayback Machine') &&
-                !link[propAttr].includes('List') &&
-                !link[propAttr].includes(' code') &&
-                !link[propAttr].includes('De jure') &&
-                !link[propAttr].includes('Hectare') &&
-                !link[propAttr].includes(':') &&
-                !link[propAttr].includes('Huffpost') &&
-                !link[propAttr].includes('xpedition') &&
-                !link[propAttr].includes('township') &&
-                !link[propAttr].includes('United States') &&
-                link[propAttr] !== 'Acre' &&
-                link[propAttr] !== 'Bloomberg News' &&
-                link[propAttr] !== currentState &&
-                link[propAttr] !== `${currentState} (state)` &&
-                link['exists'] === ''
-              ) {
-                if (!linksShell.textContent.includes(link[propAttr])) {
-                  let propTypeText = document.createElement('p');
-                  propTypeText.textContent = link[propAttr];
-                  propTypeText.addEventListener('click', (e) => {
-                    if (counter === 0) {
-                      printWikiGrouping(
-                        searchResult
-                          ? searchResult
-                          : e.target.childNodes[0].data,
-                        'links',
-                        '',
-                        'Communities',
-                        linkTermFilter
-                      );
-                      counter = 1;
-                    } else if (counter === 1) {
-                      printWikiGrouping(
-                        e.target.childNodes[0].data,
-                        'sections',
-                        '',
-                        'History',
-                        ''
-                      );
-                    }
-                  });
-                  linksShell.append(propTypeText);
-                  linksShell.classList.add('containerize');
-                }
+              if (!linksShell.textContent.includes(link[propAttr])) {
+                let propTypeText = document.createElement('p');
+                propTypeText.textContent = link[propAttr];
+                propTypeText.addEventListener('click', (e) => {
+                  if (counter === 0) {
+                    printWikiGrouping(
+                      e.target.childNodes[0].data,
+                      'links',
+                      '',
+                      'Communities',
+                      linkTermFilter
+                    );
+                    counter = 1;
+                  } else if (counter === 1) {
+                    printWikiGrouping(
+                      e.target.childNodes[0].data,
+                      'sections',
+                      '',
+                      'History',
+                      ''
+                    );
+                  }
+                });
+                linksShell.append(propTypeText);
+                linksShell.classList.add('containerize');
               }
-            });
-          }
+            }
+          });
+          // }
         });
       }
     }
