@@ -87,14 +87,14 @@ stateSubmit.addEventListener('submit', (e) => {
 });
 
 const submitAlias = () => {
-  if (aliasInput.value.length >= 4) {
-    currentAlias = aliasInput.value;
-    populateLocalStorage();
-    aliasSuccess.textContent = `Status: Now viewing/storing "${aliasInput.value}'s" bookmarks`;
-    aliasInput.value = '';
-  } else {
-    aliasSuccess.textContent = `Status: Please enter at least 3 characters`;
-  }
+  // if (aliasInput.value.length >= 4) {
+  currentAlias = aliasInput.value;
+  populateLocalStorage();
+  aliasSuccess.textContent = `Status: Now viewing/storing "${aliasInput.value}'s" bookmarks`;
+  aliasInput.value = '';
+  // } else {
+  //   aliasSuccess.textContent = `Status: Please enter at least 3 characters`;
+  // }
 };
 
 aliasButton.addEventListener('click', (e) => {
@@ -113,7 +113,7 @@ const populateLocalStorage = () => {
   axios.get(`${localBaseURL}/bookmarks`).then((res) => {
     res = res.data;
     res.forEach((bookmark) => {
-      if (bookmark.id === currentAlias) {
+      if (bookmark.alias === currentAlias) {
         localStorage.setItem(bookmark.id, JSON.stringify(bookmark));
       }
     });
@@ -146,7 +146,8 @@ const getBookmarks = () => {
   axios.get(`${localBaseURL}/bookmarks`).then((res) => {
     res = res.data;
     let displayList = res.filter(
-      (bookmark) => bookmark['alias'] === currentAlias
+      // (bookmark) => bookmark['alias'] === currentAlias
+      (bookmark) => bookmark === bookmark
     );
     bookmarksContentShell.classList.remove('containerize');
     bookmarksListBox.textContent = '';
