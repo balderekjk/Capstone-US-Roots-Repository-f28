@@ -79,10 +79,12 @@ const submitAlias = () => {
     currentAlias = aliasInput.value;
     populateLocalAPI();
     populateLocalStorage();
-    aliasSuccess.textContent = `Status: Now viewing/storing "${aliasInput.value}'s" bookmarks`;
+    aliasSuccess.textContent = `Status: Now viewing/storing "${currentAlias}'s" bookmarks`;
     aliasInput.value = '';
   } else {
-    aliasSuccess.textContent = `Status: Please enter at least 3 characters`;
+    if (!currentAlias) {
+      aliasSuccess.textContent = `Status: Please enter at least 3 characters`;
+    }
   }
 };
 
