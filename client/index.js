@@ -59,6 +59,7 @@ bookmarkToggle.addEventListener('click', () => {
 
 stateSubmit.addEventListener('submit', (e) => {
   if (!usMap.classList.contains('hidden')) usMap.classList.add('hidden');
+  linksShell.textContent = '';
   linksShell.classList.remove('hidden');
   contentShell.classList.add('hidden');
   currentState = statesSelect.value;
@@ -206,12 +207,9 @@ const printWikiGrouping = (
   linkTermFilter
 ) => {
   pageName.textContent = '';
-  if (counter <= 1) {
+  linksShell.style.display = 'none';
+  if (counter !== 1) {
     linksShell.style.display = 'grid';
-    linksShell.classList.remove('containerize');
-    linksShell.textContent = '';
-  } else {
-    linksShell.style.display = 'none';
   }
   contentShell.textContent = '';
   let propAttr = '';
@@ -219,6 +217,7 @@ const printWikiGrouping = (
   let sectionId = 0;
 
   if (propTypes === 'links' && sectionId === 0) {
+    linksShell.style.display = 'none';
     linkPropType = true;
     propTypes = 'sections';
   }
@@ -238,6 +237,12 @@ const printWikiGrouping = (
           createBookmarkObj(page, bookmarkId, currentAlias);
         });
         backButton.addEventListener('click', () => {
+          if (sectionNACounter < 3) {
+            counter = 1;
+          } else {
+            counter = 0;
+          }
+          sectionNACounter = 0;
           linksShell.style.display = 'grid';
           contentShell.classList.add('hidden');
           pageName.innerHTML = `<h2>${currentCounty}</h2> <h4>Click location name to view its history</h4>`;
@@ -275,16 +280,21 @@ const printWikiGrouping = (
       if (linkPropType === false) {
         printWikiGrouping(page, 'text', `section=${sectionId}&`, '', '');
       } else if (linkPropType === true) {
+        if (counter === 0) {
+        }
         propAttr = '*';
         if (sectionId === 0 && sectionNACounter === 0) {
           sectionNACounter = 1;
           printWikiGrouping(page, 'links', '', 'Localities', '');
+          return;
         } else if (sectionId === 0 && sectionNACounter === 1) {
           sectionNACounter = 2;
           printWikiGrouping(page, 'links', '', 'Municipalities', '');
+          return;
         } else if (sectionId === 0 && sectionNACounter === 2) {
           printWikiGrouping(page, 'sections', '', 'History', '');
           sectionNACounter = 3;
+          return;
         }
         getWikiGrouping(page, 'links', `section=${sectionId}&`).then((res) => {
           if (counter === 0) {
@@ -293,55 +303,49 @@ const printWikiGrouping = (
             currentCounty = page;
             pageName.innerHTML = `<h2>${page}</h2> <h4>Click location name to view its history</h4>`;
           }
-          // if (sectionNACounter !== 3) {
-          res.forEach((link) => {
-            if (
-              !link[propAttr].includes('unicipalit') &&
-              !link[propAttr].includes('onsolidated') &&
-              !link[propAttr].includes('quivalent') &&
-              !link[propAttr].includes('orporated') &&
-              !link[propAttr].includes('reservation') &&
-              !link[propAttr].includes('ensus') &&
-              !link[propAttr].includes('nclaves') &&
-              !link[propAttr].includes('town') &&
-              !link[propAttr].includes('identifier') &&
-              !link[propAttr].includes('Wayback Machine') &&
-              !link[propAttr].includes('List') &&
-              !link[propAttr].includes(' code') &&
-              !link[propAttr].includes('De jure') &&
-              !link[propAttr].includes('Hectare') &&
-              !link[propAttr].includes(':') &&
-              !link[propAttr].includes('HuffPost') &&
-              !link[propAttr].includes('xpedition') &&
-              !link[propAttr].includes('township') &&
-              !link[propAttr].includes('United States') &&
-              link[propAttr] !== 'County' &&
-              link[propAttr] !== 'Acre' &&
-              link[propAttr] !== 'Bloomberg News' &&
-              link[propAttr] !== currentState &&
-              link[propAttr] !== `${currentState} (state)` &&
-              link['exists'] === ''
-            ) {
-              if (link[propAttr].includes('Sainte')) {
-                link[propAttr] = link[propAttr].replace('Sainte', 'Ste.');
-              }
-              if (link[propAttr].includes('Saint')) {
-                link[propAttr] = link[propAttr].replace('Saint', 'St.');
-              }
-              if (currentState === 'New Hampshire') {
-                if (link[propAttr].includes('Coos ')) {
-                  link[propAttr] = link[propAttr].replace('Coos', 'Coös');
+          if (sectionNACounter !== 3) {
+            linksShell.textContent = '';
+            res.forEach((link) => {
+              if (
+                !link[propAttr].includes('unicipalit') &&
+                !link[propAttr].includes('onsolidated') &&
+                !link[propAttr].includes('quivalent') &&
+                !link[propAttr].includes('orporated') &&
+                !link[propAttr].includes('reservation') &&
+                !link[propAttr].includes('ensus') &&
+                !link[propAttr].includes('nclaves') &&
+                !link[propAttr].includes('town') &&
+                !link[propAttr].includes('identifier') &&
+                !link[propAttr].includes('List') &&
+                !link[propAttr].includes(' code') &&
+                !link[propAttr].includes(':') &&
+                !link[propAttr].includes('xpedition') &&
+                !link[propAttr].includes('township') &&
+                !link[propAttr].includes('United States') &&
+                link[propAttr] !== 'County' &&
+                link[propAttr] !== currentState &&
+                link[propAttr] !== `${currentState} (state)` &&
+                link['exists'] === ''
+              ) {
+                if (link[propAttr].includes('Sainte')) {
+                  link[propAttr] = link[propAttr].replace('Sainte', 'Ste.');
                 }
-              }
-              if (currentState === 'Florida') {
-                if (link[propAttr].includes('Miami-Dade')) {
-                  link[propAttr] = link[propAttr].replace(
-                    'Miami-Dade County, Florida',
-                    'List of communities in Miami-Dade County, Florida'
-                  );
+                if (link[propAttr].includes('Saint')) {
+                  link[propAttr] = link[propAttr].replace('Saint', 'St.');
                 }
-              }
-              if (!linksShell.textContent.includes(link[propAttr])) {
+                if (currentState === 'New Hampshire') {
+                  if (link[propAttr].includes('Coos ')) {
+                    link[propAttr] = link[propAttr].replace('Coos', 'Coös');
+                  }
+                }
+                if (currentState === 'Florida') {
+                  if (link[propAttr].includes('Miami-Dade')) {
+                    link[propAttr] = link[propAttr].replace(
+                      'Miami-Dade County, Florida',
+                      'List of communities in Miami-Dade County, Florida'
+                    );
+                  }
+                }
                 let propTypeText = document.createElement('p');
                 propTypeText.textContent = link[propAttr];
                 propTypeText.addEventListener('click', (e) => {
@@ -351,7 +355,7 @@ const printWikiGrouping = (
                       'links',
                       '',
                       'Communities',
-                      linkTermFilter
+                      ''
                     );
                     counter = 1;
                   } else if (counter === 1) {
@@ -364,12 +368,12 @@ const printWikiGrouping = (
                     );
                   }
                 });
+                linksShell.style.display = 'grid';
                 linksShell.append(propTypeText);
                 linksShell.classList.add('containerize');
               }
-            }
-          });
-          // }
+            });
+          }
         });
       }
     }

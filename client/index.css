@@ -156,6 +156,10 @@ a:active {
   cursor: pointer;
 }
 
+#links-shell p:hover {
+  color: hsl(17, 69%, 37%);
+}
+
 .bookmarks-content-shell {
   width: 75%;
 }
@@ -235,7 +239,8 @@ tbody,
 .hatnote,
 #coordinates,
 .infobox,
-.quotebox {
+.quotebox,
+.preview-warning {
   display: none;
 }
 
