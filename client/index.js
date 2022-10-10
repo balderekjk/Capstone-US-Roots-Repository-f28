@@ -70,7 +70,6 @@ stateSubmit.addEventListener('submit', (e) => {
     'List of counties by U.S. state and territory',
     'links',
     '',
-    currentState,
     currentState
   );
 });
@@ -198,14 +197,7 @@ const createBookmarkObj = (page, sectionId, alias) => {
 };
 
 // term applies to term of section to display immediately or filter through first
-// optional linkTermFilter is second term to find and display only the links that includes that term
-const printWikiGrouping = (
-  page,
-  propTypes,
-  sectionQueryString,
-  term,
-  linkTermFilter
-) => {
+const printWikiGrouping = (page, propTypes, sectionQueryString, term) => {
   pageName.textContent = '';
   linksShell.style.display = 'none';
   if (counter !== 1) {
@@ -264,7 +256,7 @@ const printWikiGrouping = (
             slice2 = contentShell.textContent.length - 1;
           }
           let sliced = contentShell.textContent.slice(slice1, slice2);
-          printWikiGrouping(sliced, 'sections', '', 'History', '');
+          printWikiGrouping(sliced, 'sections', '', 'History');
         }
       } else {
         contentShell.innerHTML = res;
@@ -278,27 +270,28 @@ const printWikiGrouping = (
         res.findIndex((propType) => propType[propAttr].includes(term)) + 1;
       bookmarkId = sectionId;
       if (linkPropType === false) {
-        printWikiGrouping(page, 'text', `section=${sectionId}&`, '', '');
+        printWikiGrouping(page, 'text', `section=${sectionId}&`, '');
       } else if (linkPropType === true) {
         if (counter === 0) {
         }
         propAttr = '*';
         if (sectionId === 0 && sectionNACounter === 0) {
           sectionNACounter = 1;
-          printWikiGrouping(page, 'links', '', 'Localities', '');
+          printWikiGrouping(page, 'links', '', 'Localities');
           return;
         } else if (sectionId === 0 && sectionNACounter === 1) {
           sectionNACounter = 2;
-          printWikiGrouping(page, 'links', '', 'Municipalities', '');
+          printWikiGrouping(page, 'links', '', 'Municipalities');
           return;
         } else if (sectionId === 0 && sectionNACounter === 2) {
-          printWikiGrouping(page, 'sections', '', 'History', '');
+          printWikiGrouping(page, 'sections', '', 'History');
           sectionNACounter = 3;
           return;
         }
         getWikiGrouping(page, 'links', `section=${sectionId}&`).then((res) => {
           if (counter === 0) {
-            pageName.innerHTML = `<h2>${page}</h2> <h4>Click county name to view its communities</h4>`;
+            currentCounty = `${currentState} Counties`;
+            pageName.innerHTML = `<h2>${currentCounty}</h2> <h4>Click county name to view its communities</h4>`;
           } else if (counter === 1 && sectionNACounter !== 3) {
             currentCounty = page;
             pageName.innerHTML = `<h2>${page}</h2> <h4>Click location name to view its history</h4>`;
@@ -354,8 +347,7 @@ const printWikiGrouping = (
                       e.target.childNodes[0].data,
                       'links',
                       '',
-                      'Communities',
-                      ''
+                      'Communities'
                     );
                     counter = 1;
                   } else if (counter === 1) {
@@ -363,8 +355,7 @@ const printWikiGrouping = (
                       e.target.childNodes[0].data,
                       'sections',
                       '',
-                      'History',
-                      ''
+                      'History'
                     );
                   }
                 });
