@@ -12,17 +12,13 @@ const regionsBrowser = document.getElementById('regions-browser');
 const bookmarksListBox = document.getElementById('bookmarks-list-box');
 const bookmarkTitle = document.getElementById('bookmark-title');
 const usMap = document.querySelector('img');
-const aliasButton = document.getElementById('alias-btn');
-const aliasInput = document.getElementById('alias-input');
-const aliasSuccess = document.getElementById('alias-success');
 const home = document.getElementById('home');
 const baseURL = 'https://en.wikipedia.org/w/api.php';
-const localBaseURL = 'https://us-roots-repository-server.herokuapp.com/api';
+const localBaseURL = 'http://localhost:4000/api';
 
 let pageAlert = '';
 let parsedStorage = null;
 let bookmarkVisible = false;
-let currentAlias = '';
 let counter = 0;
 let sectionNACounter = 0;
 let bookmarkId = 0;
@@ -33,9 +29,7 @@ const populateLocalAPI = () => {
   let itemVals = Object.keys(localStorage);
   itemVals.forEach((item) => {
     parsedStorage = JSON.parse(localStorage.getItem(item));
-    if (parsedStorage.alias === currentAlias) {
-      storeBookmarkObj(parsedStorage);
-    }
+    storeBookmarkObj(parsedStorage);
   });
 };
 
@@ -74,39 +68,11 @@ stateSubmit.addEventListener('submit', (e) => {
   );
 });
 
-const submitAlias = () => {
-  if (aliasInput.value.length >= 4) {
-    currentAlias = aliasInput.value;
-    populateLocalAPI();
-    populateLocalStorage();
-    aliasSuccess.textContent = `Status: Now viewing/storing "${currentAlias}'s" bookmarks`;
-    aliasInput.value = '';
-  } else {
-    if (!currentAlias) {
-      aliasSuccess.textContent = `Status: Please enter at least 3 characters`;
-    }
-  }
-};
-
-aliasButton.addEventListener('click', (e) => {
-  submitAlias();
-  getBookmarks();
-});
-
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
-    const event = new Event('click');
-    aliasButton.dispatchEvent(event);
-  }
-});
-
 const populateLocalStorage = () => {
   axios.get(`${localBaseURL}/bookmarks`).then((res) => {
     res = res.data;
     res.forEach((bookmark) => {
-      if (bookmark.alias === currentAlias) {
-        localStorage.setItem(bookmark.id, JSON.stringify(bookmark));
-      }
+      localStorage.setItem(bookmark.id, JSON.stringify(bookmark));
     });
     return;
   });
@@ -136,14 +102,12 @@ const deleteBookmark = (id) => {
 const getBookmarks = () => {
   axios.get(`${localBaseURL}/bookmarks`).then((res) => {
     res = res.data;
-    let displayList = res.filter(
-      (bookmark) => bookmark['alias'] === currentAlias
-    );
+    console.log(res);
     bookmarksContentShell.classList.remove('containerize');
     bookmarksListBox.textContent = '';
     bookmarksContentShell.textContent = '';
     bookmarkTitle.textContent = '';
-    displayList.forEach((rep) => {
+    res.forEach((rep) => {
       let bookmark = document.createElement('li');
       bookmark.append(rep['page']);
       bookmark.addEventListener('click', () => {
@@ -167,38 +131,27 @@ const getBookmarks = () => {
 };
 
 const storeBookmarkObj = (body) => {
-  if (currentAlias.length >= 4) {
-    axios
-      .post(`${localBaseURL}/bookmarks`, body)
-      .then((res) => {
-        if (pageAlert) {
-          pageAlert.textContent = "Nice! View this snippet at 'Bookmarks'";
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        if (pageAlert) {
-          pageAlert.textContent = 'This mark is already in the book';
-        }
-      });
-  } else {
-    pageAlert.textContent = 'Oops... enter an alias first';
-  }
+  axios.post(`${localBaseURL}/bookmarks`, body).then((res) => {
+    console.log(res);
+    if (pageAlert) {
+      return (pageAlert.textContent = "Nice! View this snippet at 'Bookmarks'");
+    }
+  });
+
+  pageAlert.textContent = 'This mark is already in the book';
 };
 
-const createBookmarkObj = (page, sectionId, alias) => {
+const createBookmarkObj = (page, sectionId) => {
   let bookmarkData = {
-    id: page.concat(alias),
+    id: page,
     page: page,
     sectionId: sectionId,
-    alias: alias,
   };
 
-  localStorage.setItem(page.concat(alias), JSON.stringify(bookmarkData));
+  localStorage.setItem(page, JSON.stringify(bookmarkData));
   storeBookmarkObj(bookmarkData);
 };
 
-// term applies to term of section to display immediately or filter through first
 const printWikiGrouping = (page, propTypes, sectionQueryString, term) => {
   pageName.textContent = '';
   linksShell.style.display = 'none';
@@ -228,7 +181,7 @@ const printWikiGrouping = (page, propTypes, sectionQueryString, term) => {
         pageAlert = document.getElementById('page-alert');
         bookmark.addEventListener('click', () => {
           bookmark.classList.add('activated');
-          createBookmarkObj(page, bookmarkId, currentAlias);
+          createBookmarkObj(page, bookmarkId);
         });
         backButton.addEventListener('click', () => {
           if (sectionNACounter < 3) {
@@ -372,3 +325,6 @@ const printWikiGrouping = (page, propTypes, sectionQueryString, term) => {
     }
   });
 };
+
+populateLocalAPI();
+getBookmarks();
