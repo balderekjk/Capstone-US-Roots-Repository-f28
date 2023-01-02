@@ -81,10 +81,10 @@ const getWikiGrouping = (page, propTypes, sectionQueryString) => {
 };
 
 const deleteBookmark = (id) => {
-  let toRemove = bookmarks.findIndex((bookmark) => bookmark['id'] === id);
-  bookmarks.splice(toRemove);
-  getBookmarks();
   localStorage.removeItem(id);
+  let toRemove = bookmarks.findIndex((bookmark) => bookmark['id'] === id);
+  bookmarks.splice(toRemove, 1);
+  getBookmarks();
 };
 
 const getBookmarks = () => {
@@ -114,7 +114,6 @@ const getBookmarks = () => {
 
 const storeBookmarkObj = (body) => {
   bookmarks.push(body);
-  console.log(bookmarks);
   if (pageAlert) {
     return (pageAlert.textContent = "Nice! View this snippet at 'Bookmarks'");
   }
