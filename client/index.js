@@ -24,6 +24,7 @@ let sectionNACounter = 0;
 let bookmarkId = 0;
 let currentState = '';
 let currentCounty = '';
+let bookmarks = [];
 
 const populateLocalAPI = () => {
   let itemVals = Object.keys(localStorage);
@@ -68,16 +69,6 @@ stateSubmit.addEventListener('submit', (e) => {
   );
 });
 
-const populateLocalStorage = () => {
-  axios.get(`${localBaseURL}/bookmarks`).then((res) => {
-    res = res.data;
-    res.forEach((bookmark) => {
-      localStorage.setItem(bookmark.id, JSON.stringify(bookmark));
-    });
-    return;
-  });
-};
-
 //sectionQueryString i.e. section=3&; if none empty string ''
 const getWikiGrouping = (page, propTypes, sectionQueryString) => {
   return axios
@@ -90,32 +81,23 @@ const getWikiGrouping = (page, propTypes, sectionQueryString) => {
 };
 
 const deleteBookmark = (id) => {
+  let toRemove = bookmarks.findIndex((bookmark) => bookmark['id'] === id);
+  bookmarks.splice(toRemove);
+  getBookmarks();
   localStorage.removeItem(id);
-  axios
-    .delete(`${localBaseURL}/bookmarks/${id}`)
-    .then(() => {
-      getBookmarks();
-    })
-    .catch((err) => console.log(err));
 };
 
 const getBookmarks = () => {
-  axios.get(`${localBaseURL}/bookmarks`).then((res) => {
-    res = res.data;
-    console.log(res);
-    bookmarksContentShell.classList.remove('containerize');
-    bookmarksListBox.textContent = '';
-    bookmarksContentShell.textContent = '';
-    bookmarkTitle.textContent = '';
-    res.forEach((rep) => {
-      let bookmark = document.createElement('li');
-      bookmark.append(rep['page']);
-      bookmark.addEventListener('click', () => {
-        getWikiGrouping(
-          rep['page'],
-          'text',
-          `section=${rep['sectionId']}&`
-        ).then((res) => {
+  bookmarksContentShell.classList.remove('containerize');
+  bookmarksListBox.textContent = '';
+  bookmarksContentShell.textContent = '';
+  bookmarkTitle.textContent = '';
+  bookmarks.forEach((rep) => {
+    let bookmark = document.createElement('li');
+    bookmark.append(rep['page']);
+    bookmark.addEventListener('click', () => {
+      getWikiGrouping(rep['page'], 'text', `section=${rep['sectionId']}&`).then(
+        (res) => {
           bookmarkTitle.innerHTML = `<h2>${rep['page']}<br>History</h2> <h4>Feel free to remove bookmark</h4>`;
           bookmarksContentShell.innerHTML = `<div id='bookmark-div'><div><a id='wiki-link-a' href='https://en.wikipedia.org/wiki/${rep['page']}#History' target='_blank' rel='noreferrer noopener'>Visit Wiki Page</a></div><i id="unbookmark" class="fa fa-bookmark-o"></i></div>${res['*']}`;
           bookmarksContentShell.classList.add('containerize');
@@ -123,22 +105,19 @@ const getBookmarks = () => {
           unbookmark.addEventListener('click', () => {
             deleteBookmark(rep['id']);
           });
-        });
-      });
-      bookmarksListBox.append(bookmark);
+        }
+      );
     });
+    bookmarksListBox.append(bookmark);
   });
 };
 
 const storeBookmarkObj = (body) => {
-  axios.post(`${localBaseURL}/bookmarks`, body).then((res) => {
-    console.log(res);
-    if (pageAlert) {
-      return (pageAlert.textContent = "Nice! View this snippet at 'Bookmarks'");
-    }
-  });
-
-  pageAlert.textContent = 'This mark is already in the book';
+  bookmarks.push(body);
+  console.log(bookmarks);
+  if (pageAlert) {
+    return (pageAlert.textContent = "Nice! View this snippet at 'Bookmarks'");
+  }
 };
 
 const createBookmarkObj = (page, sectionId) => {
@@ -147,9 +126,12 @@ const createBookmarkObj = (page, sectionId) => {
     page: page,
     sectionId: sectionId,
   };
-
-  localStorage.setItem(page, JSON.stringify(bookmarkData));
-  storeBookmarkObj(bookmarkData);
+  if (bookmarks.findIndex((bookmark) => bookmark['id'] === page) === -1) {
+    localStorage.setItem(page, JSON.stringify(bookmarkData));
+    storeBookmarkObj(bookmarkData);
+  } else {
+    pageAlert.textContent = 'This mark is already in the book';
+  }
 };
 
 const printWikiGrouping = (page, propTypes, sectionQueryString, term) => {
